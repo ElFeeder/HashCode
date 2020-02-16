@@ -1,0 +1,11 @@
+Ok, so basically you have a room with people on it. You have to order pizza for them.
+You must optimize your order so that, given the number of slices in each pizza, your
+final order doesn't have more slices than people.
+
+Input:
+Number of maximum pizza slices to order / Number of different types of pizza
+Number of slices in each pizza (pizza 0, pizza 1, pizza 2,...)
+
+Output: (Number of slices to order must be less or equal than number of maximum pizza slices to order)
+Number of different types of pizza to order
+Number of types of pizza to order(pizza 0, pizza 1, pizza 2,...)
