@@ -8,7 +8,5 @@
 /*  Main.c  */
 void initCoef(int *coef, int differentPizza);
 
-
-/*  Files.c */
 FILE* openFile(FILE *fp, char* name);
 #endif
