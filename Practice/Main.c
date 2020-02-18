@@ -2,13 +2,13 @@
 
 
 int main(int argc, char **argv)  {
-  FILE *input = NULL, *output = NULL;
+  FILE *input = NULL;
   int people, differentPizza, new;
   int i = 0, max = 0, next = 2;
   int *slices, *coef, *final;
 
 
-  input = openFile(input, argv[1]);
+  input = openFile(input, argv[1], "r");
   fscanf(input, "%d %d", &people, &differentPizza);
   slices = (int *)calloc(differentPizza, sizeof(int));
 
@@ -24,59 +24,50 @@ int main(int argc, char **argv)  {
   coef = (int *)calloc(differentPizza, sizeof(int));
   initCoef(coef, differentPizza);
 
-  /*for(i = 0; i < differentPizza; i++) {
-    printf("%d ", coef[i]);
-  }
-  printf("\n");*/
-  /*for(i = 0; i < differentPizza; i++) {
-    printf("%d ", slices[i]);
-  }
-  printf("\n");*/
   while(next < pow(2, differentPizza))  {
     new = count(coef, slices, differentPizza);
 
-    printf("%d\n", new);
     if(new == people) {
-      final = coef;
+      for(i = 0; i < differentPizza; i++)
+        final[i] = coef[i];
       break;
     }
     
     if(new > max && new < people)  {
-      printf("entered 2\n");
-      final = coef;
       for(i = 0; i < differentPizza; i++)
-        printf("%d ", final[i]);
-      printf("\n");
+        final[i] = coef[i];
       max = new;
     }
     
     changeCoef(coef, differentPizza, next);
-    /*for(i = 0; i < differentPizza; i++)
-      printf("%d ", coef[i]);
-    printf("\n");*/
     next++;
   }
 
-  writeOnFile(final, differentPizza, coef, slices);
+  writeOnFile(final, differentPizza, slices, argv[1]);
 
   return 0;
 }
 
 
-void writeOnFile(int *final, int differentPizza, int *coef, int *slices)  {
+void writeOnFile(int *final, int differentPizza, int *slices, char *originalName)  {
   int i, cont = 0;
-  
+  FILE *output = NULL;
+
+  output = openFile(output, strcat(strtok(originalName, ".in"), ".out"), "w");
+
   for(i = 0; i < differentPizza; i++) {
     if(final[i] == 1)
       cont++;
   }
-  printf("%d\n", cont); /* How many different pizzas to order */
+  fprintf(output, "%d\n", cont); /* How many different pizzas to order */
 
   for(i = 0; i < differentPizza; i++) {
-    if(coef[i] == 1)
-      printf("%d ", slices[i]); /* What pizzas to order */
+    if(final[i] == 1)
+      fprintf(output, "%d ", slices[i]); /* What pizzas to order */
   }
-  printf("\n");
+  fprintf(output, "\n");
+
+  fclose(output);
 }
 
 
@@ -117,8 +108,8 @@ void initCoef(int *coef, int differentPizza)  {
 }
 
 
-FILE* openFile(FILE *fp, char* name)  {
-  fp = fopen(name, "r");
+FILE* openFile(FILE *fp, char* name, char *mode)  {
+  fp = fopen(name, mode);
   if(fp == NULL) {
     printf("ERROR. Can't open file %s.\n", name);
     exit(1);
