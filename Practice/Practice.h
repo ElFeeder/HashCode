@@ -7,6 +7,8 @@
 #include <math.h>
 #include <string.h>
 
+#define TOLE 0.9
+
 
 /*  Main.c  */
 void initCoef(int *coef, int differentPizza);

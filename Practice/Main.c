@@ -3,9 +3,10 @@
 
 int main(int argc, char **argv)  {
   FILE *input = NULL;
-  int people, differentPizza, new;
+  int people, differentPizza;
   int i = 0, max = 0, next = 2;
   int *slices, *coef, *final;
+  float new;
 
 
   input = openFile(input, argv[1], "r");
@@ -27,7 +28,7 @@ int main(int argc, char **argv)  {
   while(next < pow(2, differentPizza))  {
     new = count(coef, slices, differentPizza);
 
-    if(new == people) {
+    if(new >= TOLE * people && new < people) {
       for(i = 0; i < differentPizza; i++)
         final[i] = coef[i];
       break;
