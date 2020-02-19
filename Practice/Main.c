@@ -3,14 +3,16 @@
 
 int main(int argc, char **argv)  {
   FILE *input = NULL;
-  int people, differentPizza;
-  int i = 0, max = 0, next = 2;
+  int differentPizza;
+  int i = 0, max = 0;
   int *slices, *coef, *final;
+
   float new;
+  unsigned long next = 2, people;
 
 
   input = openFile(input, argv[1], "r");
-  fscanf(input, "%d %d", &people, &differentPizza);
+  fscanf(input, "%lu %d", &people, &differentPizza);
   slices = (int *)calloc(differentPizza, sizeof(int));
 
   while(i < differentPizza) {
@@ -24,26 +26,27 @@ int main(int argc, char **argv)  {
 
   coef = (int *)calloc(differentPizza, sizeof(int));
   initCoef(coef, differentPizza);
-
-  while(next < pow(2, differentPizza))  {
+  
+  while(next < pow(2, MULTI * differentPizza))  {
     new = count(coef, slices, differentPizza);
-
-    if(new >= TOLE * people && new < people) {
-      for(i = 0; i < differentPizza; i++)
-        final[i] = coef[i];
-      break;
-    }
     
-    if(new > max && new < people)  {
+    if(new > max && new <= people && new >= TOLE * people)  {
       for(i = 0; i < differentPizza; i++)
         final[i] = coef[i];
-      max = new;
+      if(new == people)
+        break;
+      else
+        max = new;
     }
     
     changeCoef(coef, differentPizza, next);
     next++;
   }
 
+  if(max == 0)  {
+    printf("Low TOLE\n");
+    return 0;
+  }
   writeOnFile(final, differentPizza, slices, argv[1]);
 
   return 0;
@@ -54,19 +57,22 @@ void writeOnFile(int *final, int differentPizza, int *slices, char *originalName
   int i, cont = 0;
   FILE *output = NULL;
 
-  output = openFile(output, strcat(strtok(originalName, ".in"), ".out"), "w");
+  output = openFile(output, strcat(strtok(originalName, "."), ".out"), "w");
 
   for(i = 0; i < differentPizza; i++) {
     if(final[i] == 1)
       cont++;
   }
   fprintf(output, "%d\n", cont); /* How many different pizzas to order */
-
+  
+  cont = 0;
   for(i = 0; i < differentPizza; i++) {
-    if(final[i] == 1)
+    if(final[i] == 1) {
       fprintf(output, "%d ", slices[i]); /* What pizzas to order */
+      cont += slices[i];
+    }
   }
-  fprintf(output, "\n");
+  fprintf(output, "\n%d\n", cont);
 
   fclose(output);
 }

@@ -7,7 +7,8 @@
 #include <math.h>
 #include <string.h>
 
-#define TOLE 0.9
+#define TOLE 0.80
+#define MULTI 0.0027
 
 
 /*  Main.c  */
