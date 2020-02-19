@@ -21,13 +21,13 @@ int main(int argc, char **argv)  {
   fclose(input);
 
   RecursiveSearch (final, slices, 0.999, people, differentPizza - 1,0);
-  writeOnFile(final, differentPizza, slices, argv[1]);
+  writeOnFile(final, differentPizza, argv[1]);
 
   return 0;
 }
 
 
-void writeOnFile(int *final, int differentPizza, int *slices, char *originalName)  {
+void writeOnFile(int *final, int differentPizza, char *originalName)  {
   int i, cont = 0;
   FILE *output = NULL;
 
@@ -41,12 +41,9 @@ void writeOnFile(int *final, int differentPizza, int *slices, char *originalName
 
   cont = 0;
   for(i = 0; i < differentPizza; i++) {
-    if(final[i] == 1) {
-      fprintf(output, "%d ", slices[i]); /* What pizzas to order */
-      cont += slices[i];
-    }
+    if(final[i] == 1)
+      fprintf(output, "%d ", i); /* What pizzas to order */
   }
-  fprintf(output, "\n%d\n", cont);
 
   fclose(output);
 }
