@@ -1,14 +1,15 @@
-#include "Practice_Tree.h"
+#include "Practice.h"
 
 
 int main(int argc, char **argv)  {
   FILE *input = NULL;
-  int differentPizza;
-  int *slices, *final,i = 0;
+  int differentPizza, i = 0;
+  int *slices, *final;
   unsigned long people;
 
   input = openFile(input, argv[1], "r");
   fscanf(input, "%lu %d", &people, &differentPizza);
+
   slices = (int *)calloc(differentPizza, sizeof(int));
   final = (int *)calloc(differentPizza, sizeof(int));
 
@@ -16,9 +17,10 @@ int main(int argc, char **argv)  {
     fscanf(input, "%d ", &(slices[i]));
     i++;
   }
+
   fclose(input);
 
-  RecursiveSearch (final, slices, 0.999 , people, differentPizza - 1,0);
+  RecursiveSearch (final, slices, 0.999, people, differentPizza - 1,0);
   writeOnFile(final, differentPizza, slices, argv[1]);
 
   return 0;
@@ -59,10 +61,10 @@ FILE* openFile(FILE *fp, char* name, char *mode)  {
   return fp;
 }
 
-unsigned long RecursiveSearch (int *final, int *slices,float tolerance,unsigned long people,int startPoint, unsigned long lastResult){
-  for (;startPoint >= 0 && lastResult <= people*tolerance ;startPoint--){
+unsigned long RecursiveSearch (int *final, int *slices, float tolerance, unsigned long people, int startPoint, unsigned long lastResult) {
+  for (;startPoint >= 0 && lastResult <= people*tolerance ;startPoint--)  {
     lastResult = lastResult + slices[startPoint];
-    if (lastResult > people){
+    if (lastResult > people)  {
       lastResult = lastResult - slices [startPoint];
       RecursiveSearch (final,slices,tolerance,people,startPoint-1,lastResult);
       continue;

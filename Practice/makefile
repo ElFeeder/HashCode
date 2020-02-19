@@ -2,5 +2,5 @@
 
 all: PracticeTree
 
-PracticeTree:	Main_Tree.c Practice_Tree.h
-	gcc -Wall -pedantic -ansi -o3 Main_Tree.c -o PracticeTree -lm
+PracticeTree:	Main.c Practice.h
+	gcc -Wall -pedantic -ansi -o3 Main.c -o Practice -lm
