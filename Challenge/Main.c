@@ -9,22 +9,28 @@ int main(int argc, char** argv)  {
 
   input = openFile(argv[1], "r");
 
-  fscanf(input, "%lud %d %lud", &numberDiffBooks, &numberLibraries, &days);
+  fscanf(input, "%lud ", &numberDiffBooks);
+  fscanf(input, "%d ", &numberLibraries);
+  fscanf(input, "%lud", &days);
 
   bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
-
-  bookScore = quicksort();
 
   for(i = 0; i < numberDiffBooks; i++)
     fscanf(input, "%d ", &bookScore[i]);
 
+  quicksort(bookScore, 0, numberDiffBooks);
+
   libraryList = makeList(numberLibraries, input);
 
-  
+  for(i = 0; i < numberDiffBooks; i++)  {
+    printf("%d ", bookScore[i]);
+  }
+  printf("\n");
   
   
   return 0;
 }
+
 
 FILE* openFile(char *name, char *mode)  {
   FILE *input;
@@ -38,6 +44,7 @@ FILE* openFile(char *name, char *mode)  {
   return input;
 }
 
+
 LIBRARY* makeList(int numberLibraries, FILE *input) {
   LIBRARY *libraryList;
   int i, a;
@@ -47,13 +54,42 @@ LIBRARY* makeList(int numberLibraries, FILE *input) {
   for(i = 0; i < numberLibraries; i++)  {
     fscanf(input, "%d ", &libraryList[i].numberBooks);
     fscanf(input, "%d ", &libraryList[i].signup);
-    fscanf(input, "%lud", &libraryList[i].scanNumber);
+    fscanf(input, "%u", &libraryList[i].scanNumber);
 
-    libraryList[i].id.id = (int *)malloc(libraryList[i].numberBooks * sizeof(int));
+    libraryList[i].id = (BOOK *)malloc(libraryList[i].numberBooks * sizeof(BOOK));
     
     for(a = 0; a < libraryList[i].numberBooks; a++)
-      fscanf(input, "%d ", &libraryList[i].id.id[a]);
+      fscanf(input, "%u ", &libraryList[i].id[a].id);
   }
 
   return libraryList;
+}
+
+void quicksort(int *bookScore, int first, int last) {
+  int i, j, pivot, temp;
+
+   if(first < last) {
+    pivot = first;
+    i = first;
+    j = last;
+
+    while(i < j)  {
+      while(bookScore[i] <= bookScore[pivot] && i < last)
+        i++;
+      while(bookScore[j] > bookScore[pivot])
+        j--;
+      if(i < j) {
+        temp = bookScore[i];
+        bookScore[i] = bookScore[j];
+        bookScore[j] = temp;
+      }
+    }
+
+    temp = bookScore[pivot];
+    bookScore[pivot] = bookScore[j];
+    bookScore[j] = temp;
+
+    quicksort(bookScore, first, j - 1);
+    quicksort(bookScore, j+1, last);
+   }
 }

@@ -1,18 +1,21 @@
+#ifndef CHALLENGE_H
+#define CHALLENGE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
 
-typedef struct id {
-  unsigned int *id;
+typedef struct book {
+  unsigned int id;
   int *score;
-}ID;
+}BOOK;
   
   
 typedef struct library  {
   int numberBooks;
   int signup;
   unsigned int scanNumber;
-  ID id;
+  BOOK *id;
   int effectiveTime;
   int maxOutput;
   int libraryScore;
@@ -23,3 +26,7 @@ typedef struct library  {
 FILE* openFile(char *name, char *mode);
 
 LIBRARY* makeList(int numberLibraries, FILE *input);
+
+void quicksort(int *bookScore, int first, int last);
+
+#endif
