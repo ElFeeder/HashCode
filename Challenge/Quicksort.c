@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-
-unsigned int *bookScore;
 
 typedef struct library  {
   int numberBooks;
   int signup;
-  unsigned int scanNumber;
-  unsigned int *id;
+  unsigned long scanNumber;
+  unsigned long *id;
   int effectiveTime;
   int maxOutput;
   int libraryScore;
@@ -16,7 +15,7 @@ typedef struct library  {
 }LIBRARY;
 
 
-void quicksort(unsigned int *bookScore, int first, int last) {
+void quicksort(unsigned long *bookScore, int first, int last) {
   int i, j, pivot, temp;
 
    if(first < last) {
@@ -41,7 +40,7 @@ void quicksort(unsigned int *bookScore, int first, int last) {
     bookScore[j] = temp;
 
     quicksort(bookScore, first, j - 1);
-    quicksort(bookScore, j+1, last);
+    quicksort(bookScore, j + 1, last);
    }
 }
 
@@ -62,6 +61,7 @@ FILE* openFile(char *name, char *mode)  {
 LIBRARY* makeList(int numberLibraries, FILE *input, int *bookScore) {
   LIBRARY *libraryList;
   int i, a;
+  int *original;
 
   libraryList = (LIBRARY *)malloc(numberLibraries * sizeof(LIBRARY));
   
@@ -70,40 +70,54 @@ LIBRARY* makeList(int numberLibraries, FILE *input, int *bookScore) {
 
     fscanf(input, "%d ", &libraryList[i].numberBooks);
     fscanf(input, "%d ", &libraryList[i].signup);
-    fscanf(input, "%u", &libraryList[i].scanNumber);
+    fscanf(input, "%lu", &libraryList[i].scanNumber);
 
-    libraryList[i].id = (unsigned int *)malloc(libraryList[i].numberBooks * sizeof(unsigned int));
+    libraryList[i].id = (unsigned long *)malloc(libraryList[i].numberBooks * sizeof(unsigned long));
+    
+    original = (int *)malloc(libraryList[i].numberBooks * 2 * sizeof(int));
     
     for(a = 0; a < libraryList[i].numberBooks; a++) {
-      fscanf(input, "%u ", &libraryList[i].id[a]);
+      fscanf(input, "%lu ", &libraryList[i].id[a]);
+      original[a] = libraryList[i].id[a];
+      original[a + libraryList[i].numberBooks] = libraryList[i].id[a];
+      /*printf("here - %lu\n", libraryList[i].id[a]);*/
       libraryList[i].id[a] = bookScore[libraryList[i].id[a]];
+      /*printf("here - %lu\n", libraryList[i].id[a]);*/
     }
 
     quicksort(libraryList[i].id, 0, libraryList[i].numberBooks);
+
+    /*for(a = 0; a < libraryList[i].numberBooks; a++)
+      printf("bla - %lu\n", libraryList[i].id[a]);*/
+
+    libraryList[i].id[a] = 
   }
 
   return libraryList;
 }
 
 
-void writeOnFile(char *originalName)  {
-  int i, cont = 0;
+void writeOnFile(char *originalName, unsigned long numberDiffBooks, int numberLibraries, unsigned long days, LIBRARY *libraryList, int *bookScore)  {
+  int i, a;
   FILE *output = NULL;
 
-  output = openFile(output, strcat(strtok(originalName, "."), ".qsort"), "w");
+  output = openFile(strcat(strtok(originalName, "."), ".qsort"), "w");
 
-  fprintf(output, "%d %d %d\n ")
+  fprintf(output, "%lu %d %lu\n", numberDiffBooks, numberLibraries, days);
 
-
+  for(i = 0; i < numberDiffBooks; i++)
+    fprintf(output, "%d ", bookScore[i]);
   
-  cont = 0;
-  for(i = 0; i < differentPizza; i++) {
-    if(final[i] == 1) {
-      fprintf(output, "%d ", slices[i]); /* What pizzas to order */
-      cont += slices[i];
-    }
+  fprintf(output, "\n");
+
+  for(i = 0; i < numberLibraries; i++)  {
+    fprintf(output, "%d %d %lu\n", libraryList[i].numberBooks, libraryList[i].signup, libraryList[i].scanNumber);
+    for(a = 0; a < libraryList[i].numberBooks; a++)
+      fprintf(output, "%lu ", libraryList[i].id[a]);
+    fprintf(output, "\n");
   }
-  fprintf(output, "\n%d\n", cont);
+  fprintf(output, "\n");
+
 
   fclose(output);
 }
@@ -119,10 +133,12 @@ int main(int argc, char** argv) {
 
   input = openFile(argv[1], "r");
 
-  fscanf(input, "%lud ", &numberDiffBooks);
+  fscanf(input, "%lu ", &numberDiffBooks);
   fscanf(input, "%d ", &numberLibraries);
-  fscanf(input, "%lud", &days);
+  fscanf(input, "%lu", &days);
 
+  /*printf("we good");*/
+  
   bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
 
   for(i = 0; i < numberDiffBooks; i++)
@@ -130,12 +146,12 @@ int main(int argc, char** argv) {
 
   libraryList = makeList(numberLibraries, input, bookScore);
 
-  for(i = 0; i < numberDiffBooks; i++)  {
+  /*for(i = 0; i < numberDiffBooks; i++)  {
     printf("%d ", bookScore[i]);
   }
-  printf("\n");
+  printf("\n");*/
 
-  writeOnFile(argv[1]);
+  writeOnFile(argv[1], numberDiffBooks, numberLibraries, days, libraryList, bookScore);
   
   return 0;
 }

@@ -8,8 +8,8 @@
 typedef struct library  {
   int numberBooks;
   int signup;
-  unsigned int scanNumber;
-  unsigned int *id;
+  unsigned long scanNumber;
+  unsigned long *id;
   int effectiveTime;
   int maxOutput;
   int libraryScore;

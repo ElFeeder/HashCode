@@ -10,15 +10,17 @@ int main(int argc, char** argv)  {
 
   input = openFile(argv[1], "r");
 
-  fscanf(input, "%lud ", &numberDiffBooks);
+  fscanf(input, "%lu ", &numberDiffBooks);
   fscanf(input, "%d ", &numberLibraries);
-  fscanf(input, "%lud", &days);
+  fscanf(input, "%lu", &days);
 
-  bookScore = (int *)malloc(numberDiffBooks * sizeof(unsigned int));
+  bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
 
   for(i = 0; i < numberDiffBooks; i++)
     fscanf(input, "%d ", &bookScore[i]);
 
+  fclose(input);
+  
   /*quicksort(bookScore, 0, numberDiffBooks);*/
 
   libraryList = makeList(numberLibraries, input);
@@ -52,12 +54,12 @@ LIBRARY* makeList(int numberLibraries, FILE *input) {
 
     fscanf(input, "%d ", &libraryList[i].numberBooks);
     fscanf(input, "%d ", &libraryList[i].signup);
-    fscanf(input, "%u", &libraryList[i].scanNumber);
+    fscanf(input, "%lu", &libraryList[i].scanNumber);
 
-    libraryList[i].id = (unsigned int *)malloc(libraryList[i].numberBooks * sizeof(int));
+    libraryList[i].id = (unsigned long*)malloc(libraryList[i].numberBooks * sizeof(unsigned long));
     
     for(a = 0; a < libraryList[i].numberBooks; a++)
-      fscanf(input, "%u ", &libraryList[i].id[a]);
+      fscanf(input, "%lu ", &libraryList[i].id[a]);
   }
 
   return libraryList;
