@@ -7,7 +7,6 @@ typedef struct library  {
   int signup;
   int scanNumber;
   int *ID;
-  struct library *next;
 }LIBRARY;
 
 

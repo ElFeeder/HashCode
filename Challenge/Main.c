@@ -2,13 +2,14 @@
 
 int main(int argc, char** argv)  {
   FILE *input;
-  int numberDiffBooks, numberLibraries, days, i;
+  int numberLibraries, i;
+  unsigned long numberDiffBooks, days;
   int *bookScore;
   LIBRARY *libraryList;
 
   input = openFile(argv[1], "r");
 
-  fscanf(input, "%d %d %d", &numberDiffBooks, &numberLibraries, &days);
+  fscanf(input, "%lud %d %lud", &numberDiffBooks, &numberLibraries, &days);
 
   bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
 
