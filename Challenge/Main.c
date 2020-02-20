@@ -13,11 +13,16 @@ int main(int argc, char** argv)  {
 
   bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
 
+  bookScore = quicksort();
+
   for(i = 0; i < numberDiffBooks; i++)
     fscanf(input, "%d ", &bookScore[i]);
 
   libraryList = makeList(numberLibraries, input);
 
+  
+  
+  
   return 0;
 }
 
@@ -42,12 +47,12 @@ LIBRARY* makeList(int numberLibraries, FILE *input) {
   for(i = 0; i < numberLibraries; i++)  {
     fscanf(input, "%d ", &libraryList[i].numberBooks);
     fscanf(input, "%d ", &libraryList[i].signup);
-    fscanf(input, "%d", &libraryList[i].scanNumber);
+    fscanf(input, "%lud", &libraryList[i].scanNumber);
 
-    libraryList[i].ID = (int *)malloc(libraryList[i].numberBooks * sizeof(int));
+    libraryList[i].id.id = (int *)malloc(libraryList[i].numberBooks * sizeof(int));
     
     for(a = 0; a < libraryList[i].numberBooks; a++)
-      fscanf(input, "%d ", &libraryList[i].ID[a]);
+      fscanf(input, "%d ", &libraryList[i].id.id[a]);
   }
 
   return libraryList;

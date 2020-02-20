@@ -2,11 +2,20 @@
 #include <stdlib.h>
 
 
+typedef struct id {
+  unsigned int *id;
+  int *score;
+}ID;
+  
+  
 typedef struct library  {
   int numberBooks;
   int signup;
-  int scanNumber;
-  int *ID;
+  unsigned int scanNumber;
+  ID id;
+  int effectiveTime;
+  int maxOutput;
+  int libraryScore;
 }LIBRARY;
 
 
