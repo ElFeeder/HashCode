@@ -1,6 +1,9 @@
 #makefile 
 
-all:	Challenge
+all:	Challenge Quicksort
 
 Challenge:	Main.c Challenge.h	
 	gcc -Wall -pedantic -ansi -o3 Main.c -o Challenge
+
+Quicksort:	Quicksort.c
+	gcc -Wall -pedantic -ansi -o3 Quicksort.c -o Quicksort

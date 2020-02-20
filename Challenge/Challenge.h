@@ -3,22 +3,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-
-typedef struct book {
-  unsigned int id;
-  int *score;
-}BOOK;
   
   
 typedef struct library  {
   int numberBooks;
   int signup;
   unsigned int scanNumber;
-  BOOK *id;
+  unsigned int *id;
   int effectiveTime;
   int maxOutput;
   int libraryScore;
+  int availability;
 }LIBRARY;
 
 

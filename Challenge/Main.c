@@ -1,10 +1,11 @@
 #include "Challenge.h"
 
+int *bookScore;
+
 int main(int argc, char** argv)  {
   FILE *input;
   int numberLibraries, i;
   unsigned long numberDiffBooks, days;
-  int *bookScore;
   LIBRARY *libraryList;
 
   input = openFile(argv[1], "r");
@@ -13,19 +14,14 @@ int main(int argc, char** argv)  {
   fscanf(input, "%d ", &numberLibraries);
   fscanf(input, "%lud", &days);
 
-  bookScore = (int *)malloc(numberDiffBooks * sizeof(int));
+  bookScore = (int *)malloc(numberDiffBooks * sizeof(unsigned int));
 
   for(i = 0; i < numberDiffBooks; i++)
     fscanf(input, "%d ", &bookScore[i]);
 
-  quicksort(bookScore, 0, numberDiffBooks);
+  /*quicksort(bookScore, 0, numberDiffBooks);*/
 
   libraryList = makeList(numberLibraries, input);
-
-  for(i = 0; i < numberDiffBooks; i++)  {
-    printf("%d ", bookScore[i]);
-  }
-  printf("\n");
   
   
   return 0;
@@ -50,20 +46,23 @@ LIBRARY* makeList(int numberLibraries, FILE *input) {
   int i, a;
 
   libraryList = (LIBRARY *)malloc(numberLibraries * sizeof(LIBRARY));
-
+  
   for(i = 0; i < numberLibraries; i++)  {
+    libraryList[i].availability = 1;
+
     fscanf(input, "%d ", &libraryList[i].numberBooks);
     fscanf(input, "%d ", &libraryList[i].signup);
     fscanf(input, "%u", &libraryList[i].scanNumber);
 
-    libraryList[i].id = (BOOK *)malloc(libraryList[i].numberBooks * sizeof(BOOK));
+    libraryList[i].id = (unsigned int *)malloc(libraryList[i].numberBooks * sizeof(int));
     
     for(a = 0; a < libraryList[i].numberBooks; a++)
-      fscanf(input, "%u ", &libraryList[i].id[a].id);
+      fscanf(input, "%u ", &libraryList[i].id[a]);
   }
 
   return libraryList;
 }
+
 
 void quicksort(int *bookScore, int first, int last) {
   int i, j, pivot, temp;
